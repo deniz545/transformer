@@ -273,8 +273,8 @@ class DecoderLayer(nn.Module):
 
     def __init__(self, d_model, n_heads, d_ff, dropout_p=0.1):
         super(DecoderLayer, self).__init__()
-        self.self_attention = MultiHeadAttention(d_model, n_heads, dropout_p)  # masked self-attn
-        self.cross_attention = MultiHeadAttention(d_model, n_heads, dropout_p) # encoder-decoder attn
+        self.self_attention = MultiHeadAttention(d_model, n_heads, dropout_p)  
+        self.cross_attention = MultiHeadAttention(d_model, n_heads, dropout_p)
         self.feed_forward = FeedForward(d_model, d_ff, dropout_p)
 
         self.norm1 = nn.LayerNorm(d_model)
@@ -283,15 +283,10 @@ class DecoderLayer(nn.Module):
         self.dropout = nn.Dropout(dropout_p)
 
     def forward(self, x, encoder_output, src_mask=None, tgt_mask=None):
-        # 1. Masked self-attention
         attn1, _ = self.self_attention(x, x, x, tgt_mask)
         x = self.norm1(x + self.dropout(attn1))
-
-        # 2. Cross-attention: queries from decoder, keys/values from encoder
         attn2, _ = self.cross_attention(x, encoder_output, encoder_output, src_mask)
         x = self.norm2(x + self.dropout(attn2))
-
-        # 3. Feed-forward network
         ff_output = self.feed_forward(x)
         x = self.norm3(x + self.dropout(ff_output))
 

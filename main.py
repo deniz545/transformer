@@ -654,10 +654,10 @@ def main():
                 print(f"Test sentence: {sentence}")
                 print(f"> Translation: {translator.translate(sentence, prep, args.max_len)}\n")
 
-    #else:
-    #   # Load existing model
-    #    print(f"Loading model from {args.dir}")
-    #    translator = Translator.load(args.dir, device)
+    else:
+       # Load existing model
+        print(f"Loading model from {args.dir}")
+        translator = Translator.load(args.dir, device)
 
     if args.interactive:
         # Interactive translation mode
@@ -675,9 +675,9 @@ def main():
             except Exception as e:
                 print(f"Error: {e}\n")
 
-    #elif args.input is not None:
-    #    print(f"Input sentence: {args.input}")
-    #    print(f">  Translation: {translator.translate(args.input)}")
+    elif args.input is not None:
+        print(f"Input sentence: {args.input}")
+        print(f">  Translation: {translator.translate(args.input)}")
 
     if args.compare is not None:
         # load the 2 models given by the user
